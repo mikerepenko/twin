@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
 
     const { passwordHash, ...userData } = user._doc
 
-    res.json(token)
+    res.json({ token, userId: user._id })
   } catch (err) {
     console.log(err)
     res.status(500).json({
@@ -77,7 +77,7 @@ exports.register = async (req, res) => {
 
     const { passwordHash, ...userData } = user._doc
 
-    res.json(token)
+    res.json({ token, userId: user._id })
   } catch (err) {
     console.log(err)
     res.status(500).json({
