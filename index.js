@@ -2,12 +2,13 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const multer = require('multer')
+require('dotenv').config();
 
 const UserController = require('./controllers/userController.js')
 const { checkAuth } = require('./utils/checkAuth.js')
 
 mongoose
-  .connect('mongodb+srv://admin:admin@cluster0.kxfnkxj.mongodb.net/?retryWrites=true&w=majority')
+  .connect(`mongodb://${process.env.MONGO_USER}:${encodeURIComponent(process.env.MONGO_PASS)}@${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin&directConnection=true`)
   .then(() => console.log('DB - success'))
   .catch((err) => console.log('DB - error', err))
 
