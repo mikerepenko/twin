@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const multer = require('multer')
-require('dotenv').config();
+require('dotenv').config()
 
 const UserController = require('./controllers/userController.js')
 const { checkAuth } = require('./utils/checkAuth.js')
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     cb(null, "./images")
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname)
+    cb(null, req.body.id)
   }
 })
 
@@ -33,6 +33,8 @@ app.post('/register', UserController.register)
 app.get('/profile', checkAuth, UserController.profile)
 app.post('/upload', type, UserController.upload)
 app.post('/download', type, UserController.download)
+
+app.post('/edit', type, UserController.edit)
 
 app.listen(5000, (err) => {
   if (err) throw err

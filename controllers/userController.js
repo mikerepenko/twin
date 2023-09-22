@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const path = require('path')
 const UserModel = require('../models/user.js')
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const options = JSON.parse(Object.keys(req.body)[0])
 
@@ -45,7 +45,7 @@ const login = async (req, res) => {
   }
 }
 
-const register = async (req, res) => {
+exports.register = async (req, res) => {
   try {
     // const errors = validationResult(req)
     // if (!errors,isEmpty()) {
@@ -86,7 +86,7 @@ const register = async (req, res) => {
   }
 }
 
-const profile = async (req, res) => {
+exports.profile = async (req, res) => {
   try {
     const user = await UserModel.findById(req.userId)
 
@@ -107,7 +107,7 @@ const profile = async (req, res) => {
   }
 }
 
-const upload = async (req, res) => {
+exports.upload = async (req, res) => {
   try {
     res.json({ status: 'Success is uploading'})
   } catch (err) {
@@ -118,7 +118,7 @@ const upload = async (req, res) => {
   }
 }
 
-const download = async (req, res) => {
+exports.download = async (req, res) => {
   try {
     const path = require('path');
     res.sendFile(path.resolve('images/test.jpeg'));
@@ -130,10 +130,22 @@ const download = async (req, res) => {
   }
 }
 
-module.exports = {
-  login,
-  register,
-  profile,
-  upload,
-  download,
+exports.edit = async (req, res) => {
+  const { userId, name, age, description } = req.body
+
+  try {
+    await UserModel.updateOne({ _id: userId }, {
+      $set: {
+        name,
+        age,
+        description,
+      }
+    })
+
+    res.json({ status: 'Success'})
+  } catch (err) {
+    res.status(400).json({
+      message: 'Error',
+    })
+  }
 }
