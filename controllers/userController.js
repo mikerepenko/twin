@@ -71,9 +71,13 @@ exports.register = async (req, res) => {
     const response = JSON.parse(Object.keys(req.body)[0])
     const user = await UserModel.findOne({ email: response.email })
 
-    console.log(user)
+    if (!user) {
+      res.status(400).json({
+        message: 'Пользователь не найден',
+      })
+    }
 
-    if (user.code === response.code) {
+    if (user._doc.code === response.code) {
       const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' })
 
       return res.json({ token, userId: user._id })
