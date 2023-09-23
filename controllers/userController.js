@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const path = require('path')
 const UserModel = require('../models/user.js')
+const { generateCode } = require('../utils/services.js')
 
 exports.login = async (req, res) => {
   try {
@@ -47,37 +48,39 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    // const errors = validationResult(req)
-    // if (!errors,isEmpty()) {
-    //   return res.status(400).json(errors.array())
-    // }
+    const response = JSON.parse(Object.keys(req.body)[0])
 
-    const options = JSON.parse(Object.keys(req.body)[0])
+    if (!response.code) {
+      const code = generateCode()
 
-    const password = options.password
-    const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(password, salt)
+      const password = response.password
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(password, salt)
 
-    const doc = UserModel({
-      email: options.email,
-      passwordHash: hash,
-    })
+      const doc = UserModel({
+        email: response.email,
+        passwordHash: hash,
+        code: code,
+      })
+      await doc.save()
 
-    const user = await doc.save()
+      //Send to email
+      return res.json(`Код: ${code}`)
+    }
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-      },
-      'secret123',
-      {
-        expiresIn: '30d'
-      }
-    )
+    const user = await UserModel.findOne({ email: response.email })
 
-    const { passwordHash, ...userData } = user._doc
+    console.log(user._doc + '--' + response.code)
 
-    res.json({ token, userId: user._id })
+    if (user._doc.code === response.code) {
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' })
+
+      return res.json({ token, userId: user._id })
+    } else {
+      res.status(400).json({
+        message: 'Попробуйте еще раз',
+      })
+    }
   } catch (err) {
     console.log(err)
     res.status(500).json({
@@ -131,7 +134,9 @@ exports.download = async (req, res) => {
 }
 
 exports.edit = async (req, res) => {
-  const { userId, name, age, description } = req.body
+  const response = JSON.parse(Object.keys(req.body)[0])
+  
+  const { userId, name, age, description } = response
 
   try {
     await UserModel.updateOne({ _id: userId }, {

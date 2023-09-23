@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 
-const checkAuth =  (req, res, next) => {
+exports.auth =  (req, res, next) => {
   const token = (req.headers.authorization || '').replace(/Bearer\s?/, '')
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, 'secret123')
+      const decoded = jwt.verify(token, process.env.SECRET)
       req.userId = decoded._id
       next()
     } catch (err) {
@@ -18,8 +18,4 @@ const checkAuth =  (req, res, next) => {
       'message': 'Нет доступа',
     })
   }
-}
-
-module.exports = {
-  checkAuth,
 }
