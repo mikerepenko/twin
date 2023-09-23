@@ -71,7 +71,9 @@ exports.register = async (req, res) => {
     const response = JSON.parse(Object.keys(req.body)[0])
     const user = await UserModel.findOne({ email: response.email })
 
-    if (user._doc.code === response.code) {
+    console.log(user)
+
+    if (user.code === response.code) {
       const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' })
 
       return res.json({ token, userId: user._id })
