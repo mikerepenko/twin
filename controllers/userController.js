@@ -46,31 +46,30 @@ exports.login = async (req, res) => {
   }
 }
 
+exports.code = async (req, res) => {
+  const response = JSON.parse(Object.keys(req.body)[0])
+
+  const code = generateCode()
+
+  const password = response.password
+  const salt = await bcrypt.genSalt(10)
+  const hash = await bcrypt.hash(password, salt)
+
+  const doc = UserModel({
+    email: response.email,
+    passwordHash: hash,
+    code: code,
+  })
+  await doc.save()
+
+  //Send to email
+  return res.json(`Код: ${code}`)
+}
+
 exports.register = async (req, res) => {
   try {
     const response = JSON.parse(Object.keys(req.body)[0])
-
-    if (!response.code) {
-      const code = generateCode()
-
-      const password = response.password
-      const salt = await bcrypt.genSalt(10)
-      const hash = await bcrypt.hash(password, salt)
-
-      const doc = UserModel({
-        email: response.email,
-        passwordHash: hash,
-        code: code,
-      })
-      await doc.save()
-
-      //Send to email
-      return res.json(`Код: ${code}`)
-    }
-
     const user = await UserModel.findOne({ email: response.email })
-
-    console.log(user._doc + '--' + response.code)
 
     if (user._doc.code === response.code) {
       const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' })
