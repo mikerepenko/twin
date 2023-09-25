@@ -35,6 +35,7 @@ app.get('/profile', auth, UserController.profile)
 app.post('/upload', type, UserController.upload)
 app.post('/download', type, UserController.download)
 app.post('/edit', type, UserController.edit)
+app.post('/code', UserController.code)
 
 const server = app.listen(5000, (err) => {
   if (err) throw err
