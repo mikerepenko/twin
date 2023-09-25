@@ -141,7 +141,10 @@ exports.download = async (req, res) => {
 exports.edit = async (req, res) => {
   const response = JSON.parse(Object.keys(req.body)[0])
   
-  const { userId, name, age, description } = response
+  const { userId, name, age, description, gender } = response
+
+  console.log(`${name} ${age} ${description} ${gender}`)
+  
 
   try {
     await UserModel.updateOne({ _id: userId }, {
@@ -149,6 +152,7 @@ exports.edit = async (req, res) => {
         name,
         age,
         description,
+        gender,
       }
     })
 
