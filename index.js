@@ -38,6 +38,7 @@ app.post('/SetProfile', type, UserController.setProfile)
 
 app.post('/code', UserController.code)
 app.post('/SetLike', UserController.setLike)
+app.post('/getUsers', UserController.getUsers)
 
 const server = app.listen(5000, (err) => {
   if (err) throw err

@@ -161,7 +161,7 @@ exports.setProfile = async (req, res) => {
   }
 }
 
-exports.getHumans = async (req, res) => { 
+exports.getUsers = async (req, res) => { 
   try {
     const user = await UserModel.findById(req.body.userId)
 
