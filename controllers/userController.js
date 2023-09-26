@@ -140,16 +140,64 @@ exports.getImage = async (req, res) => {
 
 exports.setProfile = async (req, res) => {
   try {
-    const { userId, name, age, description, gender }  = JSON.parse(req.body.options)
+    if (req.body.options) {
+      const { userId, name, age, description, gender }  = JSON.parse(req.body.options)
 
-    await UserModel.updateOne({ _id: userId }, {
-      $set: {
-        name,
-        age,
-        description,
-        gender,
-      }
+      await UserModel.updateOne({ _id: userId }, {
+        $set: {
+          name,
+          age,
+          description,
+          gender,
+        }
+      })
+    }
+
+    res.json({ status: 'Success Edit'})
+  } catch (err) {
+    res.status(400).json({
+      message: 'Error',
     })
+  }
+}
+
+exports.getHumans = async (req, res) => { 
+  try {
+    const user = await UserModel.findById(req.body.userId)
+
+    const likes = user._doc.likes
+    const dilikes = user._doc.dilikes
+  
+    User.find({}, function(err, users) {
+      var userMap = {};
+  
+      users.forEach(function(user) {
+        userMap[user._id] = user;
+      });
+  
+      res.send(userMap);  
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: 'Error',
+    })
+  }
+}
+
+exports.setLike = async (req, res) => { 
+  try {
+    const { userId, humanId, like }  = req.body
+
+    if (like) {
+      await UserModel.updateOne({ _id: userId }, {
+        $set: {likes: [...new Set([...likes, humanId])]}
+      })
+    } else {
+      await UserModel.updateOne({ _id: userId }, {
+        $set: {dilikes: [...new Set([...dilikes, humanId])]}
+      })
+    }
+  
 
     res.json({ status: 'Success Edit'})
   } catch (err) {

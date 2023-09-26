@@ -35,7 +35,9 @@ app.post('/upload', type, UserController.upload)
 app.post('/GetProfile', UserController.getProfile)
 app.post('/GetImage', type, UserController.getImage)
 app.post('/SetProfile', type, UserController.setProfile)
+
 app.post('/code', UserController.code)
+app.post('/SetLike', UserController.setLike)
 
 const server = app.listen(5000, (err) => {
   if (err) throw err
