@@ -107,7 +107,7 @@ exports.upload = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.userId)
+    const user = await UserModel.findById(req.body.userId)
 
     if (!user) {
       return res.status.apply(404).json({
