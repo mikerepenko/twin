@@ -140,7 +140,7 @@ exports.download = async (req, res) => {
 
 exports.edit = async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body.options)
   
     //const { userId, name, age, description, gender } = response
     //console.log(`${name} ${age} ${description} ${gender}`)
