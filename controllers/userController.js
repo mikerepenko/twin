@@ -94,7 +94,18 @@ exports.register = async (req, res) => {
   }
 }
 
-exports.profile = async (req, res) => {
+exports.upload = async (req, res) => {
+  try {
+    res.json({ status: 'Success is uploading'})
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      message: 'Server is not responding',
+    })
+  }
+}
+
+exports.getProfile = async (req, res) => {
   try {
     const user = await UserModel.findById(req.userId)
 
@@ -115,21 +126,10 @@ exports.profile = async (req, res) => {
   }
 }
 
-exports.upload = async (req, res) => {
-  try {
-    res.json({ status: 'Success is uploading'})
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({
-      message: 'Server is not responding',
-    })
-  }
-}
-
-exports.download = async (req, res) => {
+exports.getImage = async (req, res) => {
   try {
     const path = require('path');
-    res.sendFile(path.resolve('images/test.jpeg'));
+    res.sendFile(path.resolve(`images/${req.body.userId}.jpeg`));
   } catch (err) {
     console.log(err)
     res.status(500).json({
@@ -138,7 +138,7 @@ exports.download = async (req, res) => {
   }
 }
 
-exports.edit = async (req, res) => {
+exports.setProfile = async (req, res) => {
   try {
     const { userId, name, age, description, gender }  = JSON.parse(req.body.options)
 

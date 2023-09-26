@@ -31,10 +31,10 @@ const type = upload.single('file')
 
 app.post('/login', UserController.login)
 app.post('/register', UserController.register)
-app.get('/profile', auth, UserController.profile)
 app.post('/upload', type, UserController.upload)
-app.post('/download', type, UserController.download)
-app.post('/edit', type, UserController.edit)
+app.post('/GetProfile', auth, UserController.getProfile)
+app.post('/GetImage', type, UserController.getImage)
+app.post('/SetProfile', type, UserController.setProfile)
 app.post('/code', UserController.code)
 
 const server = app.listen(5000, (err) => {
