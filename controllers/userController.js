@@ -163,10 +163,10 @@ exports.setProfile = async (req, res) => {
 
 exports.getUsers = async (req, res) => { 
   try {
-    const user = await UserModel.findById(req.body.userId)
+    // const user = await UserModel.findById(req.body.userId)
 
-    const likes = user._doc.likes
-    const dilikes = user._doc.dilikes
+    // const likes = user._doc.likes
+    // const dilikes = user._doc.dilikes
   
     User.find({}, function(err, users) {
       var userMap = {};
