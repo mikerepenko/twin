@@ -139,22 +139,20 @@ exports.download = async (req, res) => {
 }
 
 exports.edit = async (req, res) => {
-  const response = JSON.parse(Object.keys(req.body)[0])
-  
-  const { userId, name, age, description, gender } = response
-
-  console.log(`${name} ${age} ${description} ${gender}`)
-  
-
   try {
-    await UserModel.updateOne({ _id: userId }, {
-      $set: {
-        name,
-        age,
-        description,
-        gender,
-      }
-    })
+    console.log(req.body)
+  
+    //const { userId, name, age, description, gender } = response
+    //console.log(`${name} ${age} ${description} ${gender}`)
+
+    // await UserModel.updateOne({ _id: userId }, {
+    //   $set: {
+    //     name,
+    //     age,
+    //     description,
+    //     gender,
+    //   }
+    // })
 
     res.json({ status: 'Success'})
   } catch (err) {
