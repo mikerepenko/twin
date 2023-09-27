@@ -2,7 +2,13 @@ const User = require('../models/User.js')
 const { catchErrors } = require('../utils.js')
 
 module.exports = function(app) {
+  app.get('/users', catchErrors(async (req, res) => {
+    const users = await User.find()
+    res.send(users)
+  }))
+
   app.get('/user:id?', catchErrors(async (req, res) => {
+    console.log(123)
     const user = await User.findById(req.query.id)
 
     if (!user) {
@@ -36,10 +42,5 @@ module.exports = function(app) {
     }
 
     res.json({ status: 'Success Edit'})
-  }))
-
-  app.get('/users', catchErrors(async (req, res) => {
-    const users = await User.find()
-    res.json(users)
   }))
 }
