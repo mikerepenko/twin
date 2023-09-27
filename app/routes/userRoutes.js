@@ -2,15 +2,9 @@ const User = require('../models/User.js')
 const { internalServerError } = require('../utils.js')
 
 module.exports = function(app) {
-  app.post('/upload', async (req, res) => {
+  app.get('/users:id', async (req, res) => {
     try {
-      res.json({ status: 'Success is uploading'})
-    } catch (err) { internalServerError(res) }
-  })
-
-  app.post('/GetProfile', async (req, res) => {
-    try {
-      const user = await User.findById(req.body.userId)
+      const user = await User.findById(req.params.id)
 
       if (!user) {
         return res.status.apply(404).json({
