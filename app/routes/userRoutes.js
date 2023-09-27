@@ -8,7 +8,6 @@ module.exports = function(app) {
   }))
 
   app.get('/user:id?', catchErrors(async (req, res) => {
-    console.log(123)
     const user = await User.findById(req.query.id)
 
     if (!user) {
