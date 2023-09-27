@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken')
 
-exports.internalServerError = (res) => {
-  res.status(500).json({
-    error: "Internal Server Error",
-  })
+exports.catchErrors = (fn) => {
+  return function (req, res, next) {
+    fn(req, res, next).catch((err) => {
+      res.status(500).json({
+        error: "Internal Server Error",
+      })
+    })
+  }
 }
 
 exports.generateCode = () => {
-  const a = 50000
-  const b = Math.floor(Math.random() * 9999)
-
-  return a + b
+  return 50000 + Math.floor(Math.random() * 9999)
 }
 
 exports.auth =  (req, res, next) => {
