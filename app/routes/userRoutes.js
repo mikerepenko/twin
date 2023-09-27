@@ -4,7 +4,7 @@ const { catchErrors } = require('../utils.js')
 module.exports = function(app) {
   app.get('/users', catchErrors(async (req, res) => {
     const users = await User.find()
-    res.json(users)
+    res.send(users)
   }))
 
   app.get('/user:id?', catchErrors(async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = function(app) {
 
     const { passwordHash, ...userData } = user._doc
 
-    res.json(userData)
+    res.send(userData)
   }))
 
   app.get('/image:id?', catchErrors(async (req, res) => {
@@ -41,6 +41,6 @@ module.exports = function(app) {
       })
     }
 
-    res.json({ status: 'Success Edit'})
+    res.send({ status: 'Success Edit'})
   }))
 }
