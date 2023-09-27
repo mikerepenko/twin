@@ -2,9 +2,9 @@ const User = require('../models/User.js')
 const { internalServerError } = require('../utils.js')
 
 module.exports = function(app) {
-  app.get('/users:id', async (req, res) => {
+  app.get('/user:id?', async (req, res) => {
     try {
-      const user = await User.findById(req.params.id)
+      const user = await User.findById(req.query.id)
 
       if (!user) {
         return res.status.apply(404).json({
