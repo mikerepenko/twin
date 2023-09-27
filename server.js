@@ -4,7 +4,6 @@ const bodyParser      = require('body-parser')
 const app             = express()
 const config          = require('./config')
                         require('dotenv').config()
-                        require('./app/routes')(app)
 
 mongoose
   .connect(config.db)
@@ -12,6 +11,8 @@ mongoose
   .catch((err) => console.log('DB - error', err))
 
 app.use(express.urlencoded({ extended: true }))
+
+require('./app/routes')(app)
 
 app.listen(process.env.PORT, () => {
   console.log('Server - success')

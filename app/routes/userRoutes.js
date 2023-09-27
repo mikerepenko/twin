@@ -21,14 +21,14 @@ module.exports = function(app) {
       const { passwordHash, ...userData } = user._doc
 
       res.json(userData)
-    } catch (err) { internalServerError() }
+    } catch (err) { internalServerError(res) }
   })
 
   app.post('/GetImage', async (req, res) => {
     try {
       const path = require('path');
       res.sendFile(path.resolve(`images/${req.body.userId}.jpeg`));
-    } catch (err) { internalServerError() }
+    } catch (err) { internalServerError(res) }
   })
 
   app.post('/SetProfile', async (req, res) => {
@@ -47,7 +47,7 @@ module.exports = function(app) {
       }
 
       res.json({ status: 'Success Edit'})
-    } catch (err) { internalServerError() }
+    } catch (err) { internalServerError(res) }
   })
 
   app.post('/GetUsers', async (req, res) => { 
@@ -60,7 +60,7 @@ module.exports = function(app) {
       const users = await User.find()
       //console.log(users)
       res.json(users)
-    } catch (err) { internalServerError() }
+    } catch (err) { internalServerError(res) }
   })
 
   app.post('/SetLike', async (req, res) => { 
@@ -79,6 +79,6 @@ module.exports = function(app) {
     
 
       res.json({ status: 'Success Edit'})
-    } catch (err) { internalServerError() }
+    } catch (err) { internalServerError(res) }
   })
 }
