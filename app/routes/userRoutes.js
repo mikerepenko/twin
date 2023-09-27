@@ -16,12 +16,12 @@ module.exports = function(app) {
     res.json(userData)
   }))
 
-  app.post('/GetImage', catchErrors(async (req, res) => {
+  app.get('/image:id?', catchErrors(async (req, res) => {
     const path = require('path')
-    res.sendFile(path.resolve(`images/${req.body.userId}.jpeg`))
+    res.sendFile(path.resolve(`images/${req.query.id}.jpeg`))
   }))
 
-  app.post('/SetProfile', catchErrors(async (req, res) => {
+  app.post('/user', catchErrors(async (req, res) => {
     if (req.body.options) {
       const { userId, name, age, description, gender }  = JSON.parse(req.body.options)
 
@@ -38,25 +38,8 @@ module.exports = function(app) {
     res.json({ status: 'Success Edit'})
   }))
 
-  app.post('/GetUsers', catchErrors(async (req, res) => { 
+  app.get('/users', catchErrors(async (req, res) => {
     const users = await User.find()
     res.json(users)
-  }))
-
-  app.post('/SetLike', catchErrors(async (req, res) => {
-    const { userId, humanId, like }  = req.body
-
-    if (like) {
-      await User.updateOne({ _id: userId }, {
-        $set: {likes: [...new Set([...likes, humanId])]}
-      })
-    } else {
-      await User.updateOne({ _id: userId }, {
-        $set: {dilikes: [...new Set([...dilikes, humanId])]}
-      })
-    }
-  
-
-    res.json({ status: 'Success Edit'})
   }))
 }
