@@ -4,7 +4,7 @@ const { catchErrors } = require('../utils.js')
 module.exports = function(app) {
   app.get('/users', catchErrors(async (req, res) => {
     const users = await User.find()
-    res.send(users)
+    res.json(users)
   }))
 
   app.get('/user:id?', catchErrors(async (req, res) => {
