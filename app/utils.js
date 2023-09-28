@@ -5,6 +5,7 @@ exports.catchErrors = (fn) => {
     fn(req, res, next).catch((err) => {
       res.status(500).json({
         error: "Internal Server Error",
+        message: err,
       })
     })
   }

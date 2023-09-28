@@ -9,7 +9,7 @@ module.exports = function (app) {
       $set: {likes: [...new Set([...likes, twinId])]}
     })
 
-    res.json({ status: 'Success'})
+    res.send({ status: 'Success'})
   }))
 
   app.post('/dilike', catchErrors(async (req, res) => {
@@ -19,9 +19,8 @@ module.exports = function (app) {
       $set: {dilikes: [...new Set([...dilikes, twinId])]}
     })
 
-    res.json({ status: 'Success'})
+    res.send({ status: 'Success'})
   }))
-
   
   app.get('/twins', catchErrors(async (req, res) => {
     const user = await User.findById(req.query.id)

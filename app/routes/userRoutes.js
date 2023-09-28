@@ -1,10 +1,15 @@
+const path = require('path')
 const User = require('../models/User.js')
 const { catchErrors } = require('../utils.js')
 
 module.exports = function(app) {
-  app.get('/users', catchErrors(async (req, res) => {
+  app.get('/users:id?', catchErrors(async (req, res) => {
     const users = await User.find()
-    res.send(users)
+    const user = users.filter((u) => u._id === req.query.id)
+
+    const ratedUsers = [...user.likes, ...user.dislikes]
+    
+    res.send(users.filter((u) => !ratedUsers.includes(u._id)))
   }))
 
   app.get('/user:id?', catchErrors(async (req, res) => {
@@ -19,11 +24,6 @@ module.exports = function(app) {
     const { passwordHash, ...userData } = user._doc
 
     res.send(userData)
-  }))
-
-  app.get('/image:id?', catchErrors(async (req, res) => {
-    const path = require('path')
-    res.sendFile(path.resolve(`images/${req.query.id}.jpeg`))
   }))
 
   app.post('/user', catchErrors(async (req, res) => {

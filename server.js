@@ -1,6 +1,7 @@
 const express         = require('express')
 const mongoose        = require('mongoose')
 const app             = express()
+const path            = require('path')
 const config          = require('./config')
                         require('dotenv').config()
 
@@ -10,7 +11,8 @@ mongoose
   .catch((err) => console.log('DB - error', err))
 
 app.use(express.urlencoded({ extended: true }))
-app.use(express.json());
+app.use(express.json())
+app.use(express.static('public'))
 
 require('./app/routes')(app)
 
