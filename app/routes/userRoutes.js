@@ -4,12 +4,16 @@ const { catchErrors } = require('../utils.js')
 
 module.exports = function(app) {
   app.get('/users:id?', catchErrors(async (req, res) => {
-    const users = await User.find()
-    const user = users.filter((u) => u._id === req.query.id)
-
-    const ratedUsers = [...user.likes, ...user.dislikes]
-    
-    res.send(users.filter((u) => !ratedUsers.includes(u._id)))
+    try {
+      const users = await User.find()
+      const user = users.filter((u) => u._id === req.query.id)
+  
+      const ratedUsers = [...user.likes, ...user.dislikes]
+      
+      res.send(users.filter((u) => !ratedUsers.includes(u._id)))
+    } catch (err) {
+      console.log(err)
+    }
   }))
 
   app.get('/user:id?', catchErrors(async (req, res) => {
