@@ -7,18 +7,18 @@ exports.like = catchErrors(async (req, res) => {
     const { userId, twinId }  = req.body
 
     await userModel.updateOne({ _id: userId }, {
-      $set: {likes: twinId}
+      $push: {likes: twinId}
     })
 
     const twinUser = await userModel.findById(twinId)
 
     if (twinUser.likes.includes(userId)) {
       await userModel.updateOne({ _id: userId }, {
-        $set: {twins: twinId}
+        $push: {twins: twinId}
       })
 
       await userModel.updateOne({ _id: twinId }, {
-        $set: {twins: userId}
+        $push: {twins: userId}
       })
     }
   
@@ -32,7 +32,7 @@ exports.dislike = catchErrors(async (req, res) => {
   const { userId, twinId }  = req.body
 
   await userModel.updateOne({ _id: userId }, {
-    $set: {dislikes: twinId}
+    $push: {dislikes: twinId}
   })
 
   res.send({ status: 'Success'})

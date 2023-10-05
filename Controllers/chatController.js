@@ -9,14 +9,16 @@ exports.createChat = catchErrors(async (req, res) => {
       members: { $all: [firstId, secondId] },
     })
   
-    //if (chat) res.status(200).json(chat)
-  
-    const newChat = new chatModel({
-      members: [firstId, secondId],
-    })
-  
-    const response = newChat.save()
-    res.status(200).json(response)
+    if (chat) {
+      res.status(200).json(chat)
+    } else {
+      const newChat = new chatModel({
+        members: [firstId, secondId],
+      })
+    
+      const response = newChat.save()
+      res.status(200).json(response)
+    }
   } catch (err) {
     console.log(err)
   }
