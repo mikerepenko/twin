@@ -57,7 +57,7 @@ exports.sendMail = (code, email) => {
     service: 'yandex',
     auth: {
       user: 'mike.repenko@yandex.ru',
-      pass: 'MonsteR1998'
+      pass: process.env.MAIL_PASS,
     }
   });
 
