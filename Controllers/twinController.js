@@ -9,6 +9,18 @@ exports.like = catchErrors(async (req, res) => {
     await userModel.updateOne({ _id: userId }, {
       $set: {likes: twinId}
     })
+
+    const twinUser = await userModel.findById(twinId)
+
+    if (twinUser.likes.includes(userId)) {
+      await userModel.updateOne({ _id: userId }, {
+        $set: {twins: twinId}
+      })
+
+      await userModel.updateOne({ _id: twinId }, {
+        $set: {twins: userId}
+      })
+    }
   
     res.send({ status: 'Success'})
   } catch (err) {

@@ -6,12 +6,12 @@ exports.getUsers = async (req, res) => {
     const users = await userModel.find()
     const user = await userModel.findById(req.query.id)
 
-    const notUsers = [...user.likes, ...user.dislikes, user._id.toString()]
+    const selectedUsers = [...user.likes, ...user.dislikes, user._id.toString()]
 
     const findGender = user.gender === 'Мужской' ? 'Женский' : 'Мужской'
 
     res.send(users
-      .filter((u) => !notUsers.includes(u._id.toString()))
+      .filter((u) => !selectedUsers.includes(u._id.toString()))
       .filter((u) => u.gender === findGender)
     )
   } catch (err) {
