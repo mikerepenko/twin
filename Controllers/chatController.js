@@ -8,7 +8,7 @@ exports.createChat = catchErrors(async (req, res) => {
     members: { $all: [firstId, secondId] },
   })
 
-  if (chat) res.status(200).json(chat)
+  //if (chat) res.status(200).json(chat)
 
   const newChat = new chatModel({
     members: [firstId, secondId],
