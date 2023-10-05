@@ -42,6 +42,7 @@ io.on('connection', socket => {
     const { recipientId, text } = data
 
     console.log("addMessage " + data)
+    console.log(onlineUsers.some((u) => u.userId == recipientId))
 
     if (onlineUsers.some((u) => u.userId == recipientId)) {
       socket.emit('getMessage', { createdAt: "17:00", text,  })
