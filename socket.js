@@ -19,7 +19,11 @@ io.use((socket, next) => {
 })
 
 io.on('connection', socket => {
+  console.log("Connected user")
+
   socket.on("addNewUser", (userId) => {
+    console.log("addNewUser " + userId)
+
     !onlineUsers.some((user) => user.userId === userId) &&
       onlineUsers.push(({
         userId,
@@ -36,6 +40,8 @@ io.on('connection', socket => {
 
   socket.on('addMessage', (data) => {
     const { recipientId, text } = data
+
+    console.log("addMessage " + data)
 
     if (onlineUsers.some((u) => u.userId == recipientId)) {
       socket.emit('getMessage', { createdAt: "17:00", text,  })
