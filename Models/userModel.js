@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema(
     gender: String,
     city: String,
     likes: [String],
-    dislike: [String],
+    dislikes: [String],
     twins: [String],
   },
   {

@@ -1,7 +1,6 @@
 const express         = require('express')
 const mongoose        = require('mongoose')
 const app             = express()
-const path            = require('path')
 const config          = require('./config')
                         require('dotenv').config()
 
@@ -14,7 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static('public'))
 
-require('./app/routes')(app)
+require('./Routes')(app)
 
 app.listen(process.env.PORT, () => {
   console.log('Server - success')
