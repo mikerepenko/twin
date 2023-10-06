@@ -40,16 +40,10 @@ io.on('connection', socket => {
 
   socket.on('addMessage', (data) => {
     const { recipientId, text } = data
-
-    console.log("addMessage " + data)
-    io.emit("getOnlineUsers", onlineUsers)
-    socket.emit('getMessage', { createdAt: "17:00", text,  })
-
-    // console.log(onlineUsers.some((u) => u.userId == recipientId))
     
-    // if (onlineUsers.some((u) => u.userId == recipientId)) {
-    //   socket.emit('getMessage', { createdAt: "17:00", text,  })
-    // }
+    if (onlineUsers.some((u) => u.userId == recipientId)) {
+      io.emit('getMessage', { createdAt: "17:00", text,  })
+    }
   })
 })
 
