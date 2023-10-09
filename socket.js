@@ -5,7 +5,7 @@ const port = 11100
 
 let onlineUsers = []
 
-var io = socket(server, {
+const io = socket(server, {
     pingInterval: 10000,
     pingTimeout: 5000
 })
@@ -42,7 +42,9 @@ io.on('connection', socket => {
     const { recipientId, text } = data
     
     if (onlineUsers.some((u) => u.userId == recipientId)) {
-      io.emit('getMessage', { createdAt: "17:00", text,  })
+      if (onlineUsers.find((u) => u.userId == recipientId).socketId === socket.id) {
+        io.emit('getMessage', { createdAt: "17:00", text,  })
+      }
     }
   })
 })
