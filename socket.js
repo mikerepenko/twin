@@ -39,13 +39,12 @@ io.on('connection', socket => {
   })
 
   socket.on('addMessage', (data) => {
-    const { recipientId, text } = data
+    const { senderId, recipientId, text, chatId } = data
+
+    const recipientUser = onlineUsers.find((u) => u.userId == recipientId)
     
-    if (onlineUsers.some((u) => u.userId == recipientId)) {
-      console.log(onlineUsers.find((u) => u.userId == recipientId).socketId + '--' + socket.id)
-      if (onlineUsers.find((u) => u.userId == recipientId).socketId === socket.id) {
-        io.emit('getMessage', { createdAt: "17:00", text,  })
-      }
+    if (recipientUser) {
+      io.to(recipientUser.socketId).emit('getMessage', { senderId, createdAt: "17:00", text, chatId })
     }
   })
 })
